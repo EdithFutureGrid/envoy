@@ -18,7 +18,7 @@ envoy has a full demo server for quickly evaluating its capabilities. See the [d
 
 To install envoy for local development, clone this repository and then run:
 
-`pip install -e .[dev, test]`
+`pip install -e .[dev,test]`
 
 To ensure everything is setup correctly, tests can be run with:
 
