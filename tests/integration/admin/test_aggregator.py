@@ -2,6 +2,7 @@ import json
 import datetime as dt
 from http import HTTPStatus
 from typing import Optional
+from urllib.parse import urljoin
 
 import pytest
 import psycopg
@@ -101,8 +102,13 @@ async def test_create_aggregator(
     assert res.status_code == HTTPStatus.CREATED
     agg_id = res.json()['aggregator_id']
 
-    # Use id to get createdd aggregator, check name and domains
-    res = await admin_client_auth.get(uri.AggregatorUri.format(aggregator_id=agg_id))
+    # Check 'Location' URI in response headers
+    resource_loc = uri.AggregatorUri.format(aggregator_id=agg_id)
+    assert 'Location' in res.headers
+    assert res.headers['Location'] == urljoin(str(admin_client_auth.base_url), resource_loc)
+
+    # Use id to get created aggregator, check name and domains
+    res = await admin_client_auth.get(resource_loc)
     assert res.status_code == HTTPStatus.OK
 
     body = response.read_response_body_string(res)
