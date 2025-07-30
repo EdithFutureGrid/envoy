@@ -22,10 +22,9 @@ class AggregatorMapper:
             ],
         )
 
-
     @staticmethod
     def map_from_request(aggregator: schema_agg.AggregatorRequest) -> model_agg.Aggregator:
-        """Converts an AggregatorResponse to an Aggregator""" 
+        """Converts an AggregatorResponse to an Aggregator"""
 
         return model_agg.Aggregator(
             name=aggregator.name,
@@ -34,9 +33,8 @@ class AggregatorMapper:
             domains=[
                 model_agg.AggregatorDomain(domain=d.domain, changed_time=d.changed_time, created_time=d.created_time)
                 for d in aggregator.domains
-            ]
+            ],
         )
-
 
     @staticmethod
     def map_to_page_response(

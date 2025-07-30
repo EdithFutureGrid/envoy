@@ -12,7 +12,7 @@ from envoy_schema.admin.schema.aggregator import (
     AggregatorResponse,
     AggregatorPageResponse,
     AggregatorDomain,
-    AggregatorRequest
+    AggregatorRequest,
 )
 from envoy_schema.admin.schema.certificate import (
     CertificateResponse,
@@ -79,6 +79,7 @@ async def test_get_all_aggregators(
 
     assert [a.aggregator_id for a in agg_page.aggregators] == expected_agg_ids
 
+
 @pytest.mark.parametrize(
     "name, domains",
     [
@@ -95,17 +96,18 @@ async def test_create_aggregator(
     created_time: dt.datetime = dt.datetime.now()
     changed_time: dt.datetime = created_time
     domain_objs = [AggregatorDomain(domain=d, created_time=created_time, changed_time=changed_time) for d in domains]
-    agg_payload = AggregatorRequest(name=name, created_time=created_time,
-                                     changed_time=changed_time, domains=domain_objs).model_dump_json()
+    agg_payload = AggregatorRequest(
+        name=name, created_time=created_time, changed_time=changed_time, domains=domain_objs
+    ).model_dump_json()
 
     res = await admin_client_auth.post(uri.AggregatorCreateUri, content=agg_payload)
     assert res.status_code == HTTPStatus.CREATED
-    agg_id = res.json()['aggregator_id']
+    agg_id = res.json()["aggregator_id"]
 
     # Check 'Location' URI in response headers
     resource_loc = uri.AggregatorUri.format(aggregator_id=agg_id)
-    assert 'Location' in res.headers
-    assert res.headers['Location'] == urljoin(str(admin_client_auth.base_url), resource_loc)
+    assert "Location" in res.headers
+    assert res.headers["Location"] == urljoin(str(admin_client_auth.base_url), resource_loc)
 
     # Use id to get created aggregator, check name and domains
     res = await admin_client_auth.get(resource_loc)
@@ -119,7 +121,6 @@ async def test_create_aggregator(
     assert agg.name == name
     assert all([isinstance(s, AggregatorDomain) for s in agg.domains])
     assert sorted(domains) == sorted([d.domain for d in agg.domains])
-
 
 
 @pytest.mark.parametrize(

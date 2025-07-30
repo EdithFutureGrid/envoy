@@ -27,7 +27,6 @@ class AggregatorManager:
             return None
         return AggregatorMapper.map_to_response(aggregator)
 
-
     @staticmethod
     async def create_aggregator(session: AsyncSession, req: AggregatorRequest) -> AggregatorResponse:
         """Map an AggregatorRequest object to an Aggregator model and insert into database."""

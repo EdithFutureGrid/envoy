@@ -20,6 +20,7 @@ from envoy.server.request_scope import CertificateType
 
 logger = logging.getLogger(__name__)
 
+
 def is_valid_base64_in_pem(pem_str: str) -> bool:
     """
     Various checks for PEM format validity.
@@ -35,12 +36,13 @@ def is_valid_base64_in_pem(pem_str: str) -> bool:
 
     base64_content = "".join(match.group(1).split())
     try:
-        load_pem_x509_certificate(pem_str.encode('utf-8'))
+        load_pem_x509_certificate(pem_str.encode("utf-8"))
         base64.b64decode(base64_content, validate=True)
     except Exception:
         return False
 
     return True
+
 
 async def update_client_id_details_cache(_: Any) -> dict[str, ExpiringValue[ClientIdDetails]]:
     """To be called on cache miss. Updates the entire clientIdDetails cache with active (non-expired) client details

@@ -57,20 +57,14 @@ async def get_aggregator(
     return agg
 
 
-@router.post(
-    uri.AggregatorCreateUri,
-    status_code=http.HTTPStatus.CREATED,
-    response_model=AggregatorResponse
-)
+@router.post(uri.AggregatorCreateUri, status_code=http.HTTPStatus.CREATED, response_model=AggregatorResponse)
 async def create_singular_aggregator(
-    req: AggregatorRequest,
-    request: fastapi.Request,
-    response: fastapi.Response
+    req: AggregatorRequest, request: fastapi.Request, response: fastapi.Response
 ) -> AggregatorResponse:
     """Creates a singular aggregator.
 
     Body:
-        aggregator: AggregatorRequest: 
+        aggregator: AggregatorRequest:
         name, domains, created_at.
 
     Returns:
@@ -78,8 +72,8 @@ async def create_singular_aggregator(
     """
 
     agg = await manager.AggregatorManager.create_aggregator(db.session, req)
-    resource_url = str(request.url_for('get_aggregator', aggregator_id=agg.aggregator_id))
-    response.headers['Location'] = resource_url
+    resource_url = str(request.url_for("get_aggregator", aggregator_id=agg.aggregator_id))
+    response.headers["Location"] = resource_url
 
     return agg
 
