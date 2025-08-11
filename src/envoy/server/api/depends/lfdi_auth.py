@@ -30,6 +30,7 @@ def is_valid_base64_in_pem(pem_str: str) -> bool:
     3. Can be loaded by cryptography.x509.load_pem_x509_certificate
     """
 
+    pem_str = urllib.parse.unquote(pem_str)
     match = re.search(r"-----BEGIN CERTIFICATE-----(.*?)-----END CERTIFICATE-----", pem_str, re.DOTALL)
     if not match:
         return False
