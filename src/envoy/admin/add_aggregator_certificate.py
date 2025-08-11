@@ -225,7 +225,7 @@ async def add_client_certificate(
         response.raise_for_status()
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description="Add client certificate, optionally create aggregator.")
     parser.add_argument(
         "--aggregator-name", required=True, help="Name of the aggregator whose certificate is being added."
